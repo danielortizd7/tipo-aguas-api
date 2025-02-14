@@ -1,47 +1,18 @@
-const TipoAguaService = require('../services/tipoAguaService');
+const TipoAgua = require("../models/tipoAgua");
 
-class TipoAguaController {
-    static async obtenerTiposAgua(req, res) {
-        try {
-            const tipos = await TipoAguaService.obtener();
-            res.json(tipos);
-        } catch (e) {
-            res.status(500).json({ error: 'Error al obtener tipos de agua', detalle: e.message });
-        }
+exports.crearTipoAgua = async (req, res) => {
+  try {
+    const { "tipo de agua": tipoDeAgua, descripcion } = req.body;
+
+    if (!tipoDeAgua || !descripcion) {
+      return res.status(400).json({ error: "Todos los campos son obligatorios" });
     }
 
-    static async registrarTipoAgua(req, res) {
-        try {
-            const nuevoTipo = await TipoAguaService.registrar(req.body);
-            res.status(201).json(nuevoTipo);
-        } catch (e) {
-            res.status(500).json({ error: 'Error al registrar tipo de agua', detalle: e.message });
-        }
-    }
+    const nuevoTipoAgua = new TipoAgua({ "tipo de agua": tipoDeAgua, descripcion });
+    await nuevoTipoAgua.save();
 
-    static async eliminarTipoAgua(req, res) {
-        try {
-            const eliminado = await TipoAguaService.eliminar(req.params.id);
-            if (!eliminado) {
-                return res.status(404).json({ error: 'Tipo de agua no encontrado' });
-            }
-            res.json({ mensaje: `Tipo de agua ${req.params.id} eliminado` });
-        } catch (e) {
-            res.status(500).json({ error: 'Error al eliminar tipo de agua', detalle: e.message });
-        }
-    }
-
-    static async actualizarTipoAgua(req, res) {
-        try {
-            const tipoActualizado = await TipoAguaService.actualizar(req.params.id, req.body);
-            if (!tipoActualizado) {
-                return res.status(404).json({ error: 'Tipo de agua no encontrado' });
-            }
-            res.json(tipoActualizado);
-        } catch (e) {
-            res.status(500).json({ error: 'Error al actualizar tipo de agua', detalle: e.message });
-        }
-    }
-}
-
-module.exports = TipoAguaController;
+    res.status(201).json({ mensaje: "Tipo de agua registrado con éxito", data: nuevoTipoAgua });
+  } catch (error) {
+    res.status(500).json({ error: "Error al registrar tipo de agua", detalle: error.message });
+  }
+};

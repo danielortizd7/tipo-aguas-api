@@ -4,7 +4,12 @@ const mongoose = require("mongoose");
 const tipoAguaSchema = new mongoose.Schema(
   {
     _id: { type: String }, // Se generará antes de guardar
-    nombre: { type: String, required: true, trim: true },
+    "tipo de agua": { 
+      type: String, 
+      required: true, 
+      trim: true, 
+      enum: ["potable", "natural", "residual", "otra"] // Solo permite estos valores
+    },
     descripcion: { type: String, required: true, trim: true }
   },
   { 
@@ -27,13 +32,10 @@ tipoAguaSchema.pre("save", async function (next) {
     let existe;
 
     do {
-      // Contar documentos y generar un ID nuevo
       const count = await mongoose.model("TipoAgua").countDocuments();
       nuevoId = `H${(count + 1).toString().padStart(2, "0")}`;
-
-      // Verificar si ya existe en la BD
       existe = await mongoose.model("TipoAgua").findById(nuevoId);
-    } while (existe); // Si el ID ya existe, genera otro
+    } while (existe); 
 
     this._id = nuevoId;
   }
