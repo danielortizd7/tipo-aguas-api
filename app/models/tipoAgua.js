@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const tipoAguaSchema = new mongoose.Schema(
   {
     _id: { type: String }, // Se generará antes de guardar
-    "tipo de agua": { 
+    tipoDeAgua: { 
       type: String, 
       required: true, 
       trim: true, 

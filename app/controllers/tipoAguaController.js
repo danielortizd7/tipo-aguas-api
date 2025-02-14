@@ -2,13 +2,13 @@ const TipoAgua = require("../models/tipoAgua");
 
 exports.crearTipoAgua = async (req, res) => {
   try {
-    const { "tipo de agua": tipoDeAgua, descripcion } = req.body;
+    const { tipoDeAgua, descripcion } = req.body;
 
     if (!tipoDeAgua || !descripcion) {
       return res.status(400).json({ error: "Todos los campos son obligatorios" });
     }
 
-    const nuevoTipoAgua = new TipoAgua({ "tipo de agua": tipoDeAgua, descripcion });
+    const nuevoTipoAgua = new TipoAgua({ tipoDeAgua, descripcion });
     await nuevoTipoAgua.save();
 
     res.status(201).json({ mensaje: "Tipo de agua registrado con éxito", data: nuevoTipoAgua });
