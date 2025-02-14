@@ -1,4 +1,4 @@
-const mongoose = require("mongoose"); 
+const mongoose = require("mongoose");
 
 // Esquema del modelo
 const tipoAguaSchema = new mongoose.Schema(
@@ -9,11 +9,11 @@ const tipoAguaSchema = new mongoose.Schema(
   },
   { 
     versionKey: false, 
-    timestamps: true, // Se guarda en la BD pero se oculta en la API
+    timestamps: true,
     toJSON: {
       transform: function (doc, ret) {
-        delete ret.createdAt; // Oculta createdAt
-        delete ret.updatedAt; // Oculta updatedAt
+        delete ret.createdAt;
+        delete ret.updatedAt;
         return ret;
       }
     }
@@ -23,14 +23,19 @@ const tipoAguaSchema = new mongoose.Schema(
 // Generar ID personalizado antes de guardar
 tipoAguaSchema.pre("save", async function (next) {
   if (!this._id) {
-    const lastItem = await mongoose.model("TipoAgua").findOne().sort({ _id: -1 });
+    let nuevoId;
+    let existe;
 
-    let lastIdNumber = 0;
-    if (lastItem && /^H\d+$/.test(lastItem._id)) {
-      lastIdNumber = parseInt(lastItem._id.substring(1));  
-    }
+    do {
+      // Contar documentos y generar un ID nuevo
+      const count = await mongoose.model("TipoAgua").countDocuments();
+      nuevoId = `H${(count + 1).toString().padStart(2, "0")}`;
 
-    this._id = `H${(lastIdNumber + 1).toString().padStart(2, "0")}`; // H01, H02...
+      // Verificar si ya existe en la BD
+      existe = await mongoose.model("TipoAgua").findById(nuevoId);
+    } while (existe); // Si el ID ya existe, genera otro
+
+    this._id = nuevoId;
   }
   next();
 });
