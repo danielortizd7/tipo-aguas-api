@@ -25,7 +25,7 @@ const tipoAguaSchema = new mongoose.Schema(
   }
 );
 
-// Generar ID personalizado antes de guardar
+// Generar ID personalizado 
 tipoAguaSchema.pre("save", async function (next) {
   if (!this._id) {
     let nuevoId;

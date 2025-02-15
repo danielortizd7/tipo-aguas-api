@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors'); // <---- Importar CORS
 const dotenv = require('dotenv');
 const tipoAguaRoutes = require('./app/routes/tipoAguaRoutes');
 const conectarDB = require('./app/database/databasemongo');
@@ -6,6 +7,7 @@ const conectarDB = require('./app/database/databasemongo');
 dotenv.config();
 const app = express();
 
+app.use(cors()); // <---- Habilitar CORS
 app.use(express.json()); // Middleware para JSON
 
 conectarDB(); // Conectar a MongoDB
@@ -18,7 +20,7 @@ app.get('/', (req, res) => {
     res.send("Bienvenido a la API de Tipos de Agua 🌊");
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 Servidor corriendo en el puerto ${PORT}`);
 });
