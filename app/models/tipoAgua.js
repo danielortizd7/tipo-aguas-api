@@ -1,4 +1,3 @@
-
 const mongoose = require("mongoose");
 
 // Esquema del modelo
@@ -9,11 +8,16 @@ const tipoAguaSchema = new mongoose.Schema(
       type: String, 
       required: true, 
       trim: true, 
-      enum: ["potable", "natural", "residual", "otra"] // Solo permite estos valores
+      enum: ["potable", "natural", "residual", "otra"], // Se mantiene la validación
+    },
+    tipoPersonalizado: { // Nuevo campo para guardar un tipo de agua cuando es "otra"
+      type: String,
+      trim: true,
+      required: function () { return this.tipoDeAgua === "otra"; } // Requerido solo si tipoDeAgua es "otra"
     },
     descripcion: { 
       type: String, 
-      required: function() { return this.tipoDeAgua === "otra" || this.tipoDeAgua !== ""; }, 
+      required: true, 
       trim: true 
     }
   },
