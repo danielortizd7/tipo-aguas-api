@@ -1,5 +1,5 @@
 const express = require('express');
-const cors = require('cors'); // <---- Importar CORS
+const cors = require('cors');
 const dotenv = require('dotenv');
 const tipoAguaRoutes = require('./app/routes/tipoAguaRoutes');
 const conectarDB = require('./app/database/databasemongo');
@@ -7,15 +7,15 @@ const conectarDB = require('./app/database/databasemongo');
 dotenv.config();
 const app = express();
 
-app.use(cors()); // <---- Habilitar CORS
-app.use(express.json()); // Middleware para JSON
+app.use(cors()); 
+app.use(express.json()); 
 
-conectarDB(); // Conectar a MongoDB
+conectarDB(); 
 
 // Rutas
 app.use('/api/tipoAgua', tipoAguaRoutes);
 
-// Ruta de bienvenida para evitar "Cannot GET /"
+// Ruta de bienvenida
 app.get('/', (req, res) => {
     res.send("Bienvenido a la API de Tipos de Agua 🌊");
 });

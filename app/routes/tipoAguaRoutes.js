@@ -5,11 +5,11 @@ const {
   crearTipoAgua,
   actualizarTipoAgua,
   eliminarTipoAgua
-} = require("../controllers/tipoAguaController"); // ✅ Importación correcta
+} = require("../controllers/tipoAguaController");
 
-// Definir rutas
+// ✅ Definir rutas correctamente
 router.get("/", obtenerTiposAgua);
-router.post("/", crearTipoAgua);
+router.post("/crear", crearTipoAgua);
 router.put("/actualizar/:id", actualizarTipoAgua);
 router.delete("/eliminar/:id", eliminarTipoAgua);
 
