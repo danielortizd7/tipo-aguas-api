@@ -12,10 +12,10 @@ app.use(express.json());
 
 conectarDB(); 
 
-// Rutas
+// ✅ Rutas correctamente definidas
 app.use('/api/tipoAgua', tipoAguaRoutes);
 
-// Ruta de bienvenida
+// ✅ Ruta de prueba
 app.get('/', (req, res) => {
     res.send("Bienvenido a la API de Tipos de Agua 🌊");
 });
